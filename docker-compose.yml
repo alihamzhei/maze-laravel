@@ -1,0 +1,80 @@
+version: "3.9"
+
+services:
+    #-------------------------------------------#
+    #               Nginx server                #
+    #-------------------------------------------#
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "80:80"
+        volumes:
+            - "./nginx/conf.d/labsvc.conf:/etc/nginx/conf.d/default.conf"
+            - "./:/var/www/html/"
+            - "nginx_log:/var/log/nginx/"
+        container_name: labsvc_nginx
+        hostname: labsvc_nginx
+        restart: unless-stopped
+        networks:
+            - labsvc_net
+        depends_on:
+            mysql:
+                condition: service_healthy
+                restart: true
+            php:
+                condition: service_started
+
+    #-------------------------------------------#
+    #               php-fpm server              #
+    #-------------------------------------------#
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: labsvc:latest
+        container_name: labsvc
+        hostname: labsvc
+        restart: unless-stopped
+        networks:
+            - labsvc_net
+        volumes:
+            - "./php/php.ini:/usr/local/etc/php/php.ini"
+            - "./php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini"
+            - "./:/var/www/html/"
+        depends_on:
+            mysql:
+                condition: service_healthy
+
+    #-------------------------------------------#
+    #               Mysql server                #
+    #-------------------------------------------#
+    mysql:
+        image: 'mysql:8.3.0'
+        ports:
+            - '3306:3306'
+        container_name: labsvc_mysql
+        hostname: labsvc_mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: 'secret'
+            MYSQL_DATABASE: 'labsvc_db'
+            MYSQL_USER: 'labsvc'
+            MYSQL_PASSWORD: 'password'
+        volumes:
+            - 'mysql:/var/lib/mysql/'
+        networks:
+            - labsvc_net
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p secret'
+            retries: 3
+            timeout: 5s
+
+networks:
+    labsvc_net:
+volumes:
+    mysql:
+    nginx_log:
