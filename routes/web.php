@@ -7,18 +7,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
 
     $array = [
-        ["F", "E", "E", "F", "E", "E", "E"],
-        ["E", "F", "E", "E", "F", "E", "E"],
+        ["F", "E", "E", "F", "D", "E", "E"],
+        ["S", "F", "E", "E", "F", "E", "E"],
         ["E", "E", "E", "E", "E", "F", "E"],
         ["E", "F", "E", "F", "E", "E", "E"]
     ];
 
     $arrayByNumber = [
         // [y . x]
-        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6],
-        [1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6],
-        [2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6],
-        [3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6],
+        [00, 01, 02, 03, 04, 05, 06],
+        [10, 11, 12, 13, 14, 15, 16],
+        [20, 21, 22, 23, 24, 25, 26],
+        [30, 31, 32, 33, 34, 35, 36],
     ];
 
     //       top
@@ -33,8 +33,8 @@ Route::get('/', function () {
     // S  -  1  = left
 
     $startCoordinates = [
-        'y' => 1,
-        'x' => 0,
+        'y' => 0,
+        'x' => 4,
     ];
 
     $endCoordinates = [
@@ -52,6 +52,6 @@ Route::get('/', function () {
 ////    dd((int)$b[1]);
 //    dd($b);
 
-    $labService->findPossibleWays(2, 1);
-    dd($labService->getNumberPattern());
+//    $labService->findPossibleWays(2, 1);
+    dd($labService->initScoreTable());
 });
