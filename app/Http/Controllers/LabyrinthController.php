@@ -79,7 +79,7 @@ class LabyrinthController extends Controller
     {
         $labyrinth = $this->commandBus->dispatch(new UpdatePlayfieldCommand($y, $x, $type, $labyrinth));
 
-        return Response::message('labyrinth playfiled has been updated successfully')
+        return Response::message('labyrinth playfield has been updated successfully')
             ->data($labyrinth)
             ->send();
     }

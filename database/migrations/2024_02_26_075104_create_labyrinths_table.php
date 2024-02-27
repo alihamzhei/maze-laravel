@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->json('playfield');
+            $table->json('dimension');
             $table->json('start_coordinates')->nullable();
             $table->json('end_coordinates')->nullable();
             $table->timestamps();

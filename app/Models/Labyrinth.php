@@ -12,7 +12,8 @@ class Labyrinth extends Model
     protected $casts = [
         'playfield' => 'json',
         'start_coordinates' => 'json',
-        'end_coordinates' => 'json'
+        'end_coordinates' => 'json',
+        'dimension' => 'json',
     ];
 
     protected $guarded = ['id'];

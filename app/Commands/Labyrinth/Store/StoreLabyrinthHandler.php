@@ -12,6 +12,10 @@ class StoreLabyrinthHandler
         return Labyrinth::create([
             'user_id' => $command->getUser()->id,
             'playfield' => $this->fillDefaultPlayfield(),
+            'dimension' => [
+                'y' => config('app.labyrinth_y'),
+                'x' => config('app.labyrinth_x')
+            ]
         ]);
     }
 
