@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->middleware('auth.basic')->group(function () {
+Route::prefix('v1')->group(function () {
     Route::controller(LabyrinthController::class)->group(function () {
         Route::get('labyrinth', 'index');
         Route::post('labyrinth', 'store');
