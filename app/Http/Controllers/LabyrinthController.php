@@ -12,6 +12,7 @@ use App\Http\Requests\DimensionRequest;
 use App\Http\Requests\UpdatePlayfieldRequest as PlayfieldRequest;
 use App\Models\Labyrinth;
 use App\Queries\Labyrinth\ListLabyrinthQuery;
+use App\Queries\Labyrinth\SolutionLabyrinthQuery;
 use App\Services\LabyrinthSolverService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -132,17 +133,10 @@ class LabyrinthController extends Controller
      */
     public function solution(Labyrinth $labyrinth): JsonResponse
     {
-        $labService = new LabyrinthSolverService(
-            $labyrinth->playfield,
-            $labyrinth->start_coordinates,
-            $labyrinth->end_coordinates,
-            $labyrinth->dimension
-        );
-
-        $labService->start();
+        $solutionQuery = new SolutionLabyrinthQuery($labyrinth);
 
         return Response::message('labyrinth end has been solved successfully')
-            ->data($labService->getPath())
+            ->data($solutionQuery->execute())
             ->send();
     }
 }
